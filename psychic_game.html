@@ -7,6 +7,12 @@
     <title>Document</title>
 </head>
 <body>
+    <div id="game">
+        <h1>The Psychic Game</h1>
+
+    </div>
+
+
     <script type="text/javascript">
     // VARIABLES
       // ====================================================================
@@ -14,37 +20,94 @@
       // ...
       var winCount = 0;
       var lossCount = 0;
-      var guessCount = 10;
+      var guessCount = 9;
 
       //create array of all possible letters for computer to pick from
       var computerChoices = ["a", "b", "c", "d", "e", "f", "g", "h", "i","j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 
       //create variable to store user's guess
-      var userChoice;
+      var userGuess = "";
 
       //create variable to store computer's answer
-      var computerAnswer;
+      var computerAnswer = "";
+
+      // Creating a variable to hold our new HTML. Our HTML now keeps track of the user and computer guesses, and wins/losses/ties.
+    var html =
+        "<h1>The Psychic Game</h1>" +
+        "<h2>Guess what letter I'm thinking of. </h2>" +
+        "<p>Wins: " + winCount + "</p>" +
+        "<p>Losses: " + lossCount + "</p>" +
+        "<p>Guesses Left: " + guessCount + "</p>" +
+        "<p>Your Guesses So Far:" + userGuess + "</p>";
+          //letters guessed will need to be adjusted to print all the guesses
+        
+        // initially set the inner HTML contents of the #game div to our html string
+        document.querySelector("#game").innerHTML = html;
 
 
       //FUNCTIONS
     //   ==========================================
     
+    //  random function for computer to pick a letter
+        //outputs computerAnswer
+    function newAnswer() {
+        var computerAnswer = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+        console.log("computer answer is " + computerAnswer);
+    }
+
+    //call the function when page first loads
+    newAnswer();
+
 
     //   This function is run whenever the user presses a key.
     document.onkeyup = function(event) {
-        //  random function for computer to pick a letter
-            //outputs 
+    // Determines which key was pressed.
+    var userGuess = event.key;
+    console.log("user guess is " + userGuess);
+        
         //  compares letter user picked to computer
-        // if no match:
-            //  adds letter to list
-            // subtract one from number of guesses left
         // if match:
             //  adds 1 to win variable
             // re-sets guessCount and clears the list of guessed letters
+            function compare(userGuess, computerAnswer) {
+                if (userGuess === computerAnswer) {
+                    winCount = winCount + 1;
+                    console.log("win correct guess");
+                    guessCount = 9;
+                    //reset list of guessed letters
+                }   
 
+            // if no match:
+                else {
+                    guessCount = guessCount - 1;
+                    console.log("wrong guess");
+                }
+                // subtract one from number of guesses left
+                // adds userGuess letter to list 
+            }
 
+            //call compare function
+            compare(userGuess, computerAnswer);
 
-    }
+            //check if no guesses left
+                //if guessCount = 0
+                //record a loss
+                //re-set the list of guessed letters
+                //call newAnswer function to have computer guess again
+
+            if (guessCount === 0) {
+                lossCount++;
+                console.log("loss no guesses left");
+                newAnswer();
+            }
+            // re-set the inner HTML contents of the #game div to our html string to update with new values
+            document.querySelector("#game").innerHTML = html;
+    };
+    
+    
+
+        
+
     </script>
     
 </body>
