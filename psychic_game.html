@@ -4,7 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>The Psychic Game</title>
+    <link href="https://fonts.googleapis.com/css?family=Monoton|Rokkitt:400" rel="stylesheet" />
+    <style type="text/css">
+        h1{
+            color: indigo;
+            font-size: 60px;
+            font-family: 'Monoton', cursive;
+            text-align: center;
+        }
+
+        body, h2{
+            color: #333333;
+            font-family: 'Rokkitt', serif;
+        }
+
+        h2 {
+            font-size: 28px;
+        }
+
+        body {
+            font-size: 20px;
+            width: 50%;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 <body>
     <div id="game">
@@ -28,6 +52,8 @@
       //create variable to store user's guess
       var userGuess = "";
 
+      var allGuesses = [];
+
       //create variable to store computer's answer
       var computerAnswer = "";
 
@@ -38,8 +64,10 @@
         "<p>Wins: " + winCount + "</p>" +
         "<p>Losses: " + lossCount + "</p>" +
         "<p>Guesses Left: " + guessCount + "</p>" +
-        "<p>Your Guesses So Far:" + userGuess + "</p>";
-          //letters guessed will need to be adjusted to print all the guesses
+        "<p>Your Guesses So Far: " + allGuesses + "</p>";
+
+        
+          
         
         // initially set the inner HTML contents of the #game div to our html string
         document.querySelector("#game").innerHTML = html;
@@ -51,7 +79,8 @@
     //  random function for computer to pick a letter
         //outputs computerAnswer
     function newAnswer() {
-        var computerAnswer = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+        //var computerAnswer = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+        computerAnswer =  computerChoices[Math.floor(Math.random() * computerChoices.length)];
         console.log("computer answer is " + computerAnswer);
     }
 
@@ -70,10 +99,13 @@
             //  adds 1 to win variable
             // re-sets guessCount and clears the list of guessed letters
             function compare(userGuess, computerAnswer) {
+                console.log("compare(): userGuess=" + userGuess + " computerAnswer=" + computerAnswer);
                 if (userGuess === computerAnswer) {
                     winCount = winCount + 1;
                     console.log("win correct guess");
                     guessCount = 9;
+                    allGuesses = [];
+                    newAnswer();
                     //reset list of guessed letters
                 }   
 
@@ -81,6 +113,7 @@
                 else {
                     guessCount = guessCount - 1;
                     console.log("wrong guess");
+                    allGuesses.push(userGuess);
                 }
                 // subtract one from number of guesses left
                 // adds userGuess letter to list 
@@ -98,8 +131,20 @@
             if (guessCount === 0) {
                 lossCount++;
                 console.log("loss no guesses left");
+                guessCount = 9;
+                allGuesses = [];
                 newAnswer();
             }
+
+        html =
+        "<h1>The Psychic Game</h1>" +
+        "<h2>Guess what letter I'm thinking of. </h2>" +
+        "<p>Wins: " + winCount + "</p>" +
+        "<p>Losses: " + lossCount + "</p>" +
+        "<p>Guesses Left: " + guessCount + "</p>" +
+        "<p>Your Guesses So Far: " + allGuesses + "</p>";
+          //letters guessed will need to be adjusted to print all the guesses
+        
             // re-set the inner HTML contents of the #game div to our html string to update with new values
             document.querySelector("#game").innerHTML = html;
     };
